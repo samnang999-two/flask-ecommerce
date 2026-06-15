@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Account - Premium Store</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    {% include 'front/share/navbar.html' %}
+
+    <main class="bg-light py-5 min-vh-100">
+        <div class="container py-4">
+            <div class="row align-items-center mb-5">
+                <div class="col-md-6">
+                    <h1 class="display-5 fw-bold mb-0">My Account</h1>
+                    <p class="text-muted mt-2 mb-0">Welcome back, {{ user.username }}!</p>
+                </div>
+                <div class="col-md-6 text-md-end mt-3 mt-md-0">
+                    <a href="{{ url_for('logout') }}" class="btn btn-outline-dark rounded-pill px-4 shadow-sm">Sign Out</a>
+                </div>
+            </div>
+
+            <div class="row g-5">
+                <!-- Sidebar -->
+                <div class="col-lg-3">
+                    <div class="ui-card p-4">
+                        <div class="text-center border-bottom border-secondary-subtle pb-4 mb-4">
+                            <div class="bg-dark text-white rounded-circle d-inline-flex align-items-center justify-content-center mb-3 fs-3 fw-bold shadow-sm" style="width:80px;height:80px;">
+                                {{ user.username[:2]|upper }}
+                            </div>
+                            <h5 class="fw-bold mb-1">{{ user.username }}</h5>
+                            <p class="text-muted small mb-0">{{ user.email }}</p>
+                        </div>
+                        <ul class="nav flex-column gap-2">
+                            <li class="nav-item">
+                                <a class="nav-link text-dark fw-bold px-3 py-2 bg-light rounded" href="#" id="btn-orders"><i class="bi bi-box-seam me-2"></i> Orders</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-muted fw-semibold px-3 py-2 rounded transition" style="transition: background-color 0.2s;" onmouseover="this.style.backgroundColor='#f8f9fa'" onmouseout="this.style.backgroundColor='transparent'" href="#" id="btn-profile"><i class="bi bi-person me-2"></i> Profile Info</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-muted fw-semibold px-3 py-2 rounded transition" style="transition: background-color 0.2s;" onmouseover="this.style.backgroundColor='#f8f9fa'" onmouseout="this.style.backgroundColor='transparent'" href="#" onclick="Swal.fire({title: 'Info', text: 'This section is under development.', icon: 'info'});"><i class="bi bi-geo-alt me-2"></i> Addresses</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-muted fw-semibold px-3 py-2 rounded transition" style="transition: background-color 0.2s;" onmouseover="this.style.backgroundColor='#f8f9fa'" onmouseout="this.style.backgroundColor='transparent'" href="#" onclick="Swal.fire({title: 'Info', text: 'This section is under development.', icon: 'info'});"><i class="bi bi-credit-card me-2"></i> Payment Methods</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Main Content -->
+                <div class="col-lg-9">
+                    <!-- Orders Content Tab -->
+                    <div id="orders-tab-content">
+                        <h4 class="fw-bold mb-4">Recent Orders</h4>
+                        <div class="ui-card p-0 overflow-hidden border">
+                            <div class="table-responsive">
+                                <table class="table table-hover align-middle mb-0">
+                                    <thead class="table-light">
+                                        <tr>
+                                            <th scope="col" class="ps-4 py-3 fw-semibold text-muted text-uppercase small border-0">Order ID</th>
+                                            <th scope="col" class="py-3 fw-semibold text-muted text-uppercase small border-0">Date</th>
+                                            <th scope="col" class="py-3 fw-semibold text-muted text-uppercase small border-0">Status</th>
+                                            <th scope="col" class="py-3 fw-semibold text-muted text-uppercase small border-0">Total</th>
+                                            <th scope="col" class="pe-4 py-3 text-end border-0"></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="border-top-0">
+                                        <tr>
+                                            <td class="ps-4 py-4 fw-bold">#ORD-09283</td>
+                                            <td class="py-4 text-muted">May 01, 2026</td>
+                                            <td class="py-4"><span class="badge bg-success bg-opacity-10 text-success px-3 py-2 rounded-pill fw-medium">Delivered</span></td>
+                                            <td class="py-4 fw-bold">$299.99</td>
+                                            <td class="pe-4 py-4 text-end">
+                                                <button class="btn btn-sm btn-outline-dark rounded-pill px-3 fw-medium" onclick="Swal.fire({title: 'Order ORD-09283', text: 'Products: Fjallraven Backpack x1, Mens Casual Premium T-Shirt x2', icon: 'info'});">View Details</button>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="ps-4 py-4 fw-bold">#ORD-09115</td>
+                                            <td class="py-4 text-muted">April 15, 2026</td>
+                                            <td class="py-4"><span class="badge bg-success bg-opacity-10 text-success px-3 py-2 rounded-pill fw-medium">Delivered</span></td>
+                                            <td class="py-4 fw-bold">$129.99</td>
+                                            <td class="pe-4 py-4 text-end">
+                                                <button class="btn btn-sm btn-outline-dark rounded-pill px-3 fw-medium" onclick="Swal.fire({title: 'Order ORD-09115', text: 'Products: Silicon Power 256GB SSD x1', icon: 'info'});">View Details</button>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Profile Info Edit Content Tab -->
+                    <div id="profile-tab-content" style="display: none;">
+                        <h4 class="fw-bold mb-4">Profile Information</h4>
+                        <div class="ui-card p-4 p-md-5 border">
+                            <form action="{{ url_for('account') }}" method="POST" class="needs-validation" novalidate>
+                                <div class="mb-3">
+                                    <label for="profile-username" class="form-label fw-semibold">Username</label>
+                                    <input type="text" class="form-control form-control-lg" id="profile-username" name="username" value="{{ user.username }}" required>
+                                    <div class="invalid-feedback">Please enter a username.</div>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="profile-email" class="form-label fw-semibold">Email Address</label>
+                                    <input type="email" class="form-control form-control-lg" id="profile-email" name="email" value="{{ user.email }}" required>
+                                    <div class="invalid-feedback">Please enter a valid email address.</div>
+                                </div>
+                                <hr class="my-4">
+                                <h5 class="fw-bold mb-3 text-muted">Change Password (Optional)</h5>
+                                <div class="mb-3">
+                                    <label for="profile-new-password" class="form-label fw-semibold">New Password</label>
+                                    <input type="password" class="form-control form-control-lg" id="profile-new-password" name="new_password" placeholder="Leave blank to keep current password" minlength="6">
+                                    <div class="invalid-feedback">New password must be at least 6 characters long.</div>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="profile-confirm-password" class="form-label fw-semibold">Confirm New Password</label>
+                                    <input type="password" class="form-control form-control-lg" id="profile-confirm-password" name="confirm_new_password" placeholder="Confirm new password">
+                                    <div class="invalid-feedback">Please confirm your new password.</div>
+                                </div>
+                                <hr class="my-4">
+                                <div class="mb-3">
+                                    <label for="profile-current-password" class="form-label fw-semibold text-danger">Current Password (Required for updates)</label>
+                                    <input type="password" class="form-control form-control-lg border-danger-subtle" id="profile-current-password" name="current_password" placeholder="Enter current password to save changes" required>
+                                    <div class="invalid-feedback">Please enter your current password to authorize changes.</div>
+                                </div>
+                                <button type="submit" class="btn btn-dark btn-lg rounded-pill px-4 py-3 shadow-sm">Save Profile Changes</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    {% include 'front/share/footer.html' %}
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var btnOrders = document.getElementById('btn-orders');
+            var btnProfile = document.getElementById('btn-profile');
+            var ordersContent = document.getElementById('orders-tab-content');
+            var profileContent = document.getElementById('profile-tab-content');
+
+            if (btnOrders && btnProfile && ordersContent && profileContent) {
+                btnOrders.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    btnOrders.className = "nav-link text-dark fw-bold px-3 py-2 bg-light rounded";
+                    btnProfile.className = "nav-link text-muted fw-semibold px-3 py-2 rounded transition";
+                    ordersContent.style.display = "block";
+                    profileContent.style.display = "none";
+                });
+
+                btnProfile.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    btnProfile.className = "nav-link text-dark fw-bold px-3 py-2 bg-light rounded";
+                    btnOrders.className = "nav-link text-muted fw-semibold px-3 py-2 rounded transition";
+                    ordersContent.style.display = "none";
+                    profileContent.style.display = "block";
+                });
+            }
+            
+            // Bootstrap form validation
+            var forms = document.querySelectorAll('.needs-validation')
+            Array.prototype.slice.call(forms).forEach(function (form) {
+                form.addEventListener('submit', function (event) {
+                    var newPassword = document.getElementById('profile-new-password');
+                    var confirmNewPassword = document.getElementById('profile-confirm-password');
+                    
+                    if (!form.checkValidity()) {
+                        event.preventDefault()
+                        event.stopPropagation()
+                        Swal.fire({
+                            icon: 'warning',
+                            title: 'Validation Failed',
+                            text: 'Please check your inputs, including your current password.',
+                            confirmButtonColor: '#111111'
+                        });
+                    } else if (newPassword && confirmNewPassword && newPassword.value !== '' && newPassword.value !== confirmNewPassword.value) {
+                        event.preventDefault()
+                        event.stopPropagation()
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Password Mismatch',
+                            text: 'New passwords do not match.',
+                            confirmButtonColor: '#111111'
+                        });
+                    }
+                    form.classList.add('was-validated')
+                }, false)
+            })
+        });
+    </script>
+</body>
+</html>

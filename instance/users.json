@@ -1,0 +1,10 @@
+[
+    {
+        "id": "d1967fe978b448b4",
+        "username": "samnang",
+        "email": "samnangm535@gmail.com",
+        "password_hash": "scrypt:32768:8:1$zIcyJntTfnWKhpHX$0f9ed9340fd3c4aa0ec12351d7f962dee4f77095ddc2bbf91f278b24854d72a9702ce63d5a6a5c5d84619fab016802006372d1fbbc173c2086409797cf310475",
+        "reset_token": null,
+        "reset_token_expiry": null
+    }
+]

@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Premium Store</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    {% include 'front/share/navbar.html' %}
+
+    <main class="bg-light py-5 min-vh-100 d-flex align-items-center">
+        <div class="container">
+            <div class="auth-container">
+                <div class="ui-card p-4 p-md-5">
+                    <div class="text-center mb-5">
+                        <div class="d-inline-flex align-items-center justify-content-center bg-dark text-white rounded-circle mb-3" style="width: 60px; height: 60px;">
+                            <i class="bi bi-person fs-3"></i>
+                        </div>
+                        <h2 class="fw-bold mb-1">Welcome Back</h2>
+                        <p class="text-muted">Please sign in to your account</p>
+                    </div>
+                    
+                    <form action="{{ url_for('login') }}" method="POST" class="needs-validation" novalidate>
+                        <div class="mb-4">
+                            <label for="email" class="form-label fw-semibold">Email Address or Username</label>
+                            <input type="text" class="form-control form-control-lg" id="email" name="email" placeholder="Enter email or username" required>
+                            <div class="invalid-feedback">Please enter your email or username.</div>
+                        </div>
+                        <div class="mb-4">
+                            <div class="d-flex justify-content-between align-items-center mb-2">
+                                <label for="password" class="form-label fw-semibold mb-0">Password</label>
+                                <a href="{{ url_for('forgot_password') }}" class="text-decoration-none text-dark small fw-semibold border-bottom border-dark">Forgot password?</a>
+                            </div>
+                            <input type="password" class="form-control form-control-lg" id="password" name="password" placeholder="••••••••" required>
+                            <div class="invalid-feedback">Please enter your password.</div>
+                        </div>
+                        
+                        <div class="mb-4 form-check">
+                            <input type="checkbox" class="form-check-input border-secondary-subtle" id="remember">
+                            <label class="form-check-label text-muted small" for="remember">Remember me for 30 days</label>
+                        </div>
+                        
+                        <button type="submit" class="btn btn-dark btn-lg w-100 rounded-pill py-3 mb-4 shadow-sm">Sign In</button>
+                        
+                        <div class="text-center">
+                            <p class="text-muted mb-0">Don't have an account? <a href="{{ url_for('create_user') }}" class="text-dark fw-bold text-decoration-none border-bottom border-dark">Create one</a></p>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    {% include 'front/share/footer.html' %}
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        (function () {
+            'use strict'
+            var forms = document.querySelectorAll('.needs-validation')
+            Array.prototype.slice.call(forms).forEach(function (form) {
+                form.addEventListener('submit', function (event) {
+                    if (!form.checkValidity()) {
+                        event.preventDefault()
+                        event.stopPropagation()
+                        Swal.fire({
+                            icon: 'warning',
+                            title: 'Validation Failed',
+                            text: 'Please enter both your credentials to continue.',
+                            confirmButtonColor: '#111111'
+                        });
+                    }
+                    form.classList.add('was-validated')
+                }, false)
+            })
+        })()
+    </script>
+</body>
+</html>

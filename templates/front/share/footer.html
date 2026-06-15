@@ -1,0 +1,53 @@
+<footer class="footer">
+    <div class="container">
+        <div class="row g-4 mb-4">
+            <div class="col-lg-4 col-md-6">
+                <h5 class="text-uppercase mb-4">Store.</h5>
+                <p class="text-muted pe-4">Providing the finest premium products with uncompromised quality and exceptional customer service.</p>
+                <div class="d-flex gap-2 mt-3">
+                    <a href="#" class="social-icon"><i class="bi bi-facebook"></i></a>
+                    <a href="#" class="social-icon"><i class="bi bi-twitter-x"></i></a>
+                    <a href="#" class="social-icon"><i class="bi bi-instagram"></i></a>
+                    <a href="#" class="social-icon"><i class="bi bi-youtube"></i></a>
+                </div>
+            </div>
+
+            <div class="col-lg-2 col-md-6">
+                <h5 class="mb-4">Shop</h5>
+                <ul class="list-unstyled d-flex flex-column gap-2">
+                    <li><a href="{{ url_for('products_route') }}" class="footer-link">All Products</a></li>
+                    <li><a href="#" class="footer-link">New Arrivals</a></li>
+                    <li><a href="#" class="footer-link">Best Sellers</a></li>
+                    <li><a href="#" class="footer-link">Sale</a></li>
+                </ul>
+            </div>
+
+            <div class="col-lg-2 col-md-6">
+                <h5 class="mb-4">Support</h5>
+                <ul class="list-unstyled d-flex flex-column gap-2">
+                    <li><a href="#" class="footer-link">FAQ</a></li>
+                    <li><a href="#" class="footer-link">Shipping & Returns</a></li>
+                    <li><a href="{{ url_for('contact') }}" class="footer-link">Contact Us</a></li>
+                    <li><a href="#" class="footer-link">Size Guide</a></li>
+                </ul>
+            </div>
+
+            <div class="col-lg-4 col-md-6">
+                <h5 class="mb-4">Newsletter</h5>
+                <p class="text-muted mb-3">Subscribe to get special offers, free giveaways, and deals.</p>
+                <form class="d-flex">
+                    <input type="email" class="form-control rounded-start-pill" placeholder="Enter your email" aria-label="Email">
+                    <button class="btn btn-dark rounded-end-pill px-4" type="button">Subscribe</button>
+                </form>
+            </div>
+        </div>
+
+        <div class="border-top pt-4 mt-4 d-flex flex-column flex-md-row justify-content-between align-items-center">
+            <p class="text-muted mb-0 small">&copy; 2026 Store. All rights reserved.</p>
+            <div class="d-flex gap-3 mt-3 mt-md-0">
+                <a href="#" class="text-muted small text-decoration-none">Privacy Policy</a>
+                <a href="#" class="text-muted small text-decoration-none">Terms of Service</a>
+            </div>
+        </div>
+    </div>
+</footer>

@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ product.title if product else 'Product Not Found' }} - Premium Store</title>
+    <meta name="description" content="{{ product.description[:150] if product and product.description else 'View product details at Premium Store.' }}">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <style>
+        .product-detail-img-container {
+            position: relative;
+            width: 100%;
+            height: 550px;
+            background-color: #f8f9fa;
+            border-radius: 24px;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.04);
+        }
+        .product-detail-img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+        }
+        .related-product-card {
+            border: none;
+            border-radius: 16px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
+            background: #fff;
+            overflow: hidden;
+        }
+        .related-product-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.12);
+        }
+        .related-img-container {
+            position: relative;
+            width: 100%;
+            height: 240px;
+            overflow: hidden;
+            background-color: #f8f9fa;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        .related-product-img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+            transition: transform 0.5s ease;
+        }
+        .related-product-card:hover .related-product-img {
+            transform: scale(1.06);
+        }
+        .in-cart-badge {
+            background: linear-gradient(135deg, #198754, #20c997);
+            color: #fff;
+            border-radius: 50px;
+            padding: 6px 16px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            animation: fadeInBadge 0.4s ease;
+        }
+        @keyframes fadeInBadge {
+            from { opacity: 0; transform: translateY(-6px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+        #add-to-cart-btn {
+            transition: all 0.25s ease;
+        }
+        #add-to-cart-btn:disabled {
+            opacity: 0.75;
+            cursor: not-allowed;
+        }
+    </style>
+</head>
+<body>
+    {% include 'front/share/navbar.html' %}
+
+    <main class="bg-white py-5 min-vh-100">
+        <div class="container py-4">
+            {% if product %}
+            <nav aria-label="breadcrumb" class="mb-4">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="{{ url_for('home') }}" class="text-decoration-none text-muted">Home</a></li>
+                    <li class="breadcrumb-item"><a href="{{ url_for('products_route') }}" class="text-decoration-none text-muted">Shop</a></li>
+                    <li class="breadcrumb-item active fw-medium text-dark" aria-current="page">{{ product.title }}</li>
+                </ol>
+            </nav>
+
+            <div class="row gx-5">
+                <div class="col-lg-6 mb-5 mb-lg-0">
+                    <div class="product-detail-img-container">
+                        <img src="{{ product.image }}" class="product-detail-img" alt="{{ product.title }}">
+                    </div>
+                </div>
+
+                <div class="col-lg-6">
+                    <div class="ps-lg-4">
+                        <span class="badge bg-dark mb-3 px-3 py-2 rounded-pill fw-medium">In Stock</span>
+                        <h1 class="display-5 fw-bold mb-3">{{ product.title }}</h1>
+                        <div class="d-flex align-items-center mb-4">
+                            <div class="text-warning me-2">
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star-fill"></i>
+                                <i class="bi bi-star-half"></i>
+                            </div>
+                            <span class="text-muted small">({{ product.rating.count if product.rating else 0 }} Reviews)</span>
+                        </div>
+                        <p class="display-6 fw-semibold text-dark mb-4">${{ "%.2f"|format(product.price) }}</p>
+                        <p class="lead text-muted mb-4 lh-base">{{ product.description }}</p>
+
+                        <!-- Current cart quantity badge -->
+                        {% if current_qty > 0 %}
+                        <div class="mb-3" id="in-cart-info">
+                            <span class="in-cart-badge">
+                                <i class="bi bi-cart-check-fill"></i>
+                                {{ current_qty }} already in your cart
+                            </span>
+                        </div>
+                        {% else %}
+                        <div class="mb-3" id="in-cart-info" style="display:none;"></div>
+                        {% endif %}
+
+                        <hr class="my-4">
+
+                        <!-- Add to cart form (AJAX) -->
+                        <form id="add-to-cart-form" action="{{ url_for('add_to_cart', id=product.id) }}" method="POST">
+                            <div class="row g-3 align-items-end mb-4">
+                                <div class="col-auto">
+                                    <label for="quantity" class="form-label fw-semibold text-dark-gray">Quantity</label>
+                                    <div class="input-group" style="width: 170px;">
+                                        <button class="btn btn-outline-secondary border" type="button" id="qty-minus" aria-label="Decrease quantity">
+                                            <i class="bi bi-dash"></i>
+                                        </button>
+                                        <input type="number" class="form-control text-center border-secondary-subtle fw-bold flex-grow-1"
+                                               id="quantity" name="quantity" value="1" min="1" readonly>
+                                        <button class="btn btn-outline-secondary border" type="button" id="qty-plus" aria-label="Increase quantity">
+                                            <i class="bi bi-plus"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="d-flex gap-3">
+                                <button type="submit" id="add-to-cart-btn" class="btn btn-primary btn-lg flex-grow-1 py-3 rounded-pill shadow-sm">
+                                    <i class="bi bi-cart-plus me-2"></i> Add to Cart
+                                </button>
+                                <button type="button" class="btn btn-outline-dark btn-lg rounded-circle px-0" style="width: 58px;" aria-label="Add to wishlist">
+                                    <i class="bi bi-heart"></i>
+                                </button>
+                            </div>
+                        </form>
+
+                        <div class="mt-5 pt-4 border-top">
+                            <div class="d-flex align-items-center mb-3">
+                                <i class="bi bi-truck fs-4 me-3 text-dark"></i>
+                                <div>
+                                    <h6 class="fw-bold mb-0">Free Shipping</h6>
+                                    <p class="text-muted small mb-0">Free standard shipping on orders over $150</p>
+                                </div>
+                            </div>
+                            <div class="d-flex align-items-center">
+                                <i class="bi bi-arrow-return-left fs-4 me-3 text-dark"></i>
+                                <div>
+                                    <h6 class="fw-bold mb-0">Free Returns</h6>
+                                    <p class="text-muted small mb-0">30 days return policy</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {% if related_products %}
+            <section class="mt-5 pt-5 border-top">
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <h3 class="fw-bold mb-0">Similar Category</h3>
+                    <a href="{{ url_for('categories', cat=product.category) }}" class="text-dark fw-semibold text-decoration-none border-bottom border-dark pb-1">View All</a>
+                </div>
+
+                <div class="row g-4">
+                    {% for p in related_products %}
+                    <div class="col-xl-3 col-lg-4 col-md-6">
+                        <div class="card related-product-card h-100 d-flex flex-column">
+                            <div class="related-img-container">
+                                <img src="{{ p.image }}" class="related-product-img" alt="{{ p.title }}">
+                            </div>
+                            <div class="card-body p-4 d-flex flex-column flex-grow-1">
+                                <h6 class="product-title text-truncate fw-bold mb-1" title="{{ p.title }}">{{ p.title }}</h6>
+                                <span class="product-price fs-6 fw-bold text-dark mb-3 d-block">${{ "%.2f"|format(p.price) }}</span>
+
+                                <div class="d-flex gap-2 mt-auto align-items-center">
+                                    <a href="{{ url_for('product', id=p.id) }}" class="btn btn-outline-dark rounded-pill py-2 px-3 flex-grow-1 fw-semibold small d-flex align-items-center justify-content-center gap-1">
+                                        <i class="bi bi-eye"></i> Details
+                                    </a>
+                                    <form action="{{ url_for('add_to_cart', id=p.id) }}" method="POST" class="m-0 p-0">
+                                        <button type="submit" class="btn btn-dark rounded-circle d-flex align-items-center justify-content-center shadow-sm" style="width: 38px; height: 38px;" aria-label="Add to cart">
+                                            <i class="bi bi-cart-plus"></i>
+                                        </button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </section>
+            {% endif %}
+
+            {% else %}
+            <div class="text-center py-5 my-5">
+                <i class="bi bi-exclamation-circle text-muted display-1 mb-4 d-block"></i>
+                <h2 class="fw-bold">Product Not Found</h2>
+                <p class="text-muted mb-4">The product you are looking for does not exist or has been removed.</p>
+                <a href="{{ url_for('products_route') }}" class="btn btn-dark rounded-pill px-4">Continue Shopping</a>
+            </div>
+            {% endif %}
+        </div>
+    </main>
+
+    {% include 'front/share/footer.html' %}
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+    {% if product %}
+    <script>
+        // ── Quantity Selector ────────────────────────────────────────────────
+        const qtyInput  = document.getElementById('quantity');
+        const qtyMinus  = document.getElementById('qty-minus');
+        const qtyPlus   = document.getElementById('qty-plus');
+
+        qtyMinus.addEventListener('click', () => {
+            let val = parseInt(qtyInput.value) || 1;
+            if (val > 1) qtyInput.value = val - 1;
+        });
+
+        qtyPlus.addEventListener('click', () => {
+            let val = parseInt(qtyInput.value) || 1;
+            qtyInput.value = val + 1;
+        });
+
+        // Prevent typing values < 1
+        qtyInput.addEventListener('change', () => {
+            let val = parseInt(qtyInput.value);
+            if (isNaN(val) || val < 1) qtyInput.value = 1;
+        });
+
+        // ── AJAX Add-to-Cart ─────────────────────────────────────────────────
+        const productTitle = {{ product.title | tojson }};
+        const productPrice = '${{ "%.2f"|format(product.price) }}';
+        const productImage = {{ product.image | tojson }};
+
+        // Track in-cart qty (initialised from server)
+        let inCartQty = {{ current_qty | int }};
+
+        document.getElementById('add-to-cart-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            const form     = this;
+            const btn      = document.getElementById('add-to-cart-btn');
+            const qty      = parseInt(qtyInput.value) || 1;
+            const formData = new FormData(form);
+
+            btn.disabled = true;
+            btn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Adding…';
+
+            fetch(form.action, {
+                method: 'POST',
+                body: formData,
+                headers: { 'X-Requested-With': 'XMLHttpRequest' }
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (data.status === 'success') {
+                    inCartQty += qty;
+                    updateInCartBadge(inCartQty);
+                    setNavCartBadge(data.cart_qty);
+
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Added to Cart!',
+                        html: `<div class="d-flex align-items-center gap-3 mt-2">
+                                    <img src="${productImage}" style="width:64px;height:64px;object-fit:contain;border-radius:8px;">
+                                    <div class="text-start">
+                                        <div class="fw-bold">${productTitle}</div>
+                                        <div class="text-muted">${productPrice} &times; ${qty}</div>
+                                    </div>
+                               </div>`,
+                        showCancelButton: true,
+                        confirmButtonText: '<i class="bi bi-cart3 me-1"></i> View Cart',
+                        cancelButtonText:  'Continue Shopping',
+                        confirmButtonColor: '#111111',
+                        cancelButtonColor:  '#6c757d',
+                        timer: 6000,
+                        timerProgressBar: true
+                    }).then(result => {
+                        if (result.isConfirmed) {
+                            window.location.href = '{{ url_for("cart") }}';
+                        }
+                    });
+
+                    qtyInput.value = 1;
+                } else {
+                    Swal.fire({ icon: 'error', title: 'Error', text: data.message || 'Could not add item to cart.', confirmButtonColor: '#111111' });
+                }
+            })
+            .catch(() => {
+                Swal.fire({ icon: 'error', title: 'Network Error', text: 'Please check your connection and try again.', confirmButtonColor: '#111111' });
+            })
+            .finally(() => {
+                btn.disabled = false;
+                btn.innerHTML = '<i class="bi bi-cart-plus me-2"></i> Add to Cart';
+            });
+        });
+
+        // Update "X already in your cart" badge
+        function updateInCartBadge(qty) {
+            const info = document.getElementById('in-cart-info');
+            if (qty > 0) {
+                info.style.display = '';
+                info.innerHTML = `<span class="in-cart-badge"><i class="bi bi-cart-check-fill"></i> ${qty} already in your cart</span>`;
+            } else {
+                info.style.display = 'none';
+                info.innerHTML = '';
+            }
+        }
+
+        // Set navbar cart badge to exact server-confirmed count
+        function setNavCartBadge(count) {
+            const badge = document.querySelector('.navbar .badge');
+            if (badge) badge.textContent = count;
+        }
+    </script>
+    {% endif %}
+</body>
+</html>

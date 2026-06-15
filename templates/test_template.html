@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modern Product Card</title>
+
+    <style>
+
+        *{
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Segoe UI", sans-serif;
+        }
+
+        body{
+            background: #eef2f7;
+            padding: 40px;
+        }
+
+        .container{
+            display: flex;
+            gap: 25px;
+            flex-wrap: wrap;
+        }
+
+        .pro_card{
+            width: 320px;
+            background: white;
+            border-radius: 22px;
+            overflow: hidden;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+            transition: 0.3s;
+            border: 1px solid #e5e7eb;
+        }
+
+        .pro_card:hover{
+            transform: translateY(-8px);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.15);
+        }
+
+        .top{
+            background: linear-gradient(135deg, #4f46e5, #7c3aed);
+            padding: 25px;
+            color: white;
+        }
+
+        .badge{
+            display: inline-block;
+            background: #ff4d6d;
+            padding: 6px 14px;
+            border-radius: 30px;
+            font-size: 13px;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+
+        .title{
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .card_body{
+            padding: 25px;
+        }
+
+        .info{
+            margin-bottom: 18px;
+            font-size: 17px;
+            color: #4b5563;
+        }
+
+        .label{
+            color: #111827;
+            font-weight: 700;
+        }
+
+        .discount{
+            color: #dc2626;
+            font-weight: bold;
+        }
+
+        .price-section{
+            margin-top: 20px;
+            padding-top: 18px;
+            border-top: 1px solid #e5e7eb;
+        }
+
+        .old-price{
+            text-decoration: line-through;
+            color: #9ca3af;
+            font-size: 18px;
+        }
+
+        .new-price{
+            color: #16a34a;
+            font-size: 30px;
+            font-weight: bold;
+            margin-top: 5px;
+        }
+
+        .btn{
+            width: 100%;
+            margin-top: 22px;
+            padding: 13px;
+            border: none;
+            border-radius: 12px;
+            background: linear-gradient(135deg, #4f46e5, #7c3aed);
+            color: white;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .btn:hover{
+            opacity: 0.9;
+        }
+
+        .pro_img{
+            width: 100%;
+            height: 240px;
+            border-radius: 10px;
+            object-fit: contain;
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+    {% for product in products %}
+
+    <div class="pro_card">
+
+        <div class="top">
+            <div class="badge">
+                SALE
+            </div>
+
+            <div class="title">
+                Product Card
+            </div>
+        </div>
+
+        <div class="card_body">
+            <center>
+                <img class="pro_img" src="{{ product.image }}">
+            </center>
+            <hr>
+
+            <div class="info">
+                <span class="label">Product :</span>
+                {{ product.name }}
+            </div>
+
+            <div class="info">
+                <span class="label">Quantity :</span>
+                {{ product.qty }}
+            </div>
+
+            <div class="info">
+                <span class="label">Price :</span>
+                ${{ product.price }}
+            </div>
+
+            {% if product.discount_pct > 0 %}
+
+                <div class="info discount">
+                    Discount : {{ product.discount_pct }}%
+                </div>
+
+                <div class="price-section">
+
+                    <div class="old-price">
+                        ${{ product.price }}
+                    </div>
+
+                    <div class="new-price">
+                        ${{ "%.2f"|format(product.price - (product.price * product.discount_pct / 100)) }}
+                    </div>
+
+                </div>
+
+            {% else %}
+
+                <div class="price-section">
+
+                    <div class="new-price">
+                        ${{ product.price }}
+                    </div>
+
+                </div>
+
+            {% endif %}
+
+            <button class="btn">
+                Buy Now
+            </button>
+
+        </div>
+
+    </div>
+
+    {% endfor %}
+
+</div>
+
+</body>
+</html>

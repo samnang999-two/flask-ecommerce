@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Account - Premium Store</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    {% include 'front/share/navbar.html' %}
+
+    <main class="bg-light py-5 min-vh-100 d-flex align-items-center">
+        <div class="container">
+            <div class="auth-container">
+                <div class="ui-card p-4 p-md-5">
+                    <div class="text-center mb-5">
+                        <h2 class="fw-bold mb-1">Create Account</h2>
+                        <p class="text-muted">Join us to manage your orders</p>
+                    </div>
+                    
+                    <form action="{{ url_for('create_user') }}" method="POST" class="needs-validation" novalidate>
+                        <div class="mb-3">
+                            <label for="username" class="form-label fw-semibold">Username</label>
+                            <input type="text" class="form-control form-control-lg" id="username" name="username" placeholder="Choose a username" required>
+                            <div class="invalid-feedback">Please enter a username.</div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="email" class="form-label fw-semibold">Email Address</label>
+                            <input type="email" class="form-control form-control-lg" id="email" name="email" placeholder="name@example.com" required>
+                            <div class="invalid-feedback">Please enter a valid email address.</div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="password" class="form-label fw-semibold">Password</label>
+                            <input type="password" class="form-control form-control-lg" id="password" name="password" placeholder="Create a strong password" required minlength="6">
+                            <div class="form-text mt-2 small text-muted">Must be at least 6 characters long.</div>
+                            <div class="invalid-feedback">Password must be at least 6 characters long.</div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="confirm_password" class="form-label fw-semibold">Confirm Password</label>
+                            <input type="password" class="form-control form-control-lg" id="confirm_password" name="confirm_password" placeholder="Confirm your password" required>
+                            <div class="invalid-feedback">Please confirm your password.</div>
+                        </div>
+                        
+                        <div class="mb-4 form-check">
+                            <input type="checkbox" class="form-check-input border-secondary-subtle" id="terms" required>
+                            <label class="form-check-label text-muted small" for="terms">I agree to the <a href="#" class="text-dark fw-semibold text-decoration-none">Terms and Conditions</a>.</label>
+                            <div class="invalid-feedback">You must agree before registering.</div>
+                        </div>
+                        
+                        <button type="submit" class="btn btn-dark btn-lg w-100 rounded-pill py-3 mb-4 shadow-sm">Create Account</button>
+                        
+                        <div class="text-center">
+                            <p class="text-muted mb-0">Already have an account? <a href="{{ url_for('login') }}" class="text-dark fw-bold text-decoration-none border-bottom border-dark">Log in</a></p>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    {% include 'front/share/footer.html' %}
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        (function () {
+            'use strict'
+            var forms = document.querySelectorAll('.needs-validation')
+            Array.prototype.slice.call(forms).forEach(function (form) {
+                form.addEventListener('submit', function (event) {
+                    var password = document.getElementById('password');
+                    var confirmPassword = document.getElementById('confirm_password');
+                    
+                    if (!form.checkValidity()) {
+                        event.preventDefault()
+                        event.stopPropagation()
+                        Swal.fire({
+                            icon: 'warning',
+                            title: 'Validation Failed',
+                            text: 'Please check your inputs and try again.',
+                            confirmButtonColor: '#111111'
+                        });
+                    } else if (password && confirmPassword && password.value !== confirmPassword.value) {
+                        event.preventDefault()
+                        event.stopPropagation()
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Password Mismatch',
+                            text: 'Passwords do not match.',
+                            confirmButtonColor: '#111111'
+                        });
+                    }
+                    form.classList.add('was-validated')
+                }, false)
+            })
+        })()
+    </script>
+</body>
+</html>
