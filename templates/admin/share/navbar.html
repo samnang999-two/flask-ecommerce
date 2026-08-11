@@ -1,0 +1,231 @@
+<nav class="navbar navbar-expand-lg admin-navbar">
+
+    <div class="container-fluid">
+
+        <!-- Left -->
+        <div class="d-flex align-items-center">
+
+            <!-- Sidebar Toggle -->
+            <button class="btn btn-light border-0 shadow-sm me-3" id="sidebarToggle">
+
+                <i class="fa-solid fa-bars"></i>
+
+            </button>
+
+            <!-- Search -->
+            <div class="search-box">
+
+                <i class="fa-solid fa-magnifying-glass"></i>
+
+                <input
+                        type="text"
+                        class="form-control"
+                        placeholder="Search anything...">
+
+            </div>
+
+        </div>
+
+        <!-- Right -->
+        <div class="d-flex align-items-center">
+
+            <!-- Dark Mode -->
+            <button class="btn nav-icon me-2" id="darkMode">
+
+                <i class="fa-regular fa-moon"></i>
+
+            </button>
+
+            <!-- Notification -->
+            <div class="dropdown me-2">
+
+                <button
+                        class="btn nav-icon position-relative"
+                        data-bs-toggle="dropdown">
+
+                    <i class="fa-regular fa-bell"></i>
+
+                    <span class="badge bg-danger rounded-pill notification-badge">
+                        3
+                    </span>
+
+                </button>
+
+                <ul class="dropdown-menu dropdown-menu-end shadow border-0 rounded-4">
+
+                    <li class="dropdown-header fw-bold">
+                        Notifications
+                    </li>
+
+                    <li><hr class="dropdown-divider"></li>
+
+                    <li>
+
+                        <a class="dropdown-item" href="#">
+
+                            <i class="fa-solid fa-cart-shopping text-primary me-2"></i>
+
+                            New order received
+
+                        </a>
+
+                    </li>
+
+                    <li>
+
+                        <a class="dropdown-item" href="#">
+
+                            <i class="fa-solid fa-user text-success me-2"></i>
+
+                            New customer registered
+
+                        </a>
+
+                    </li>
+
+                    <li>
+
+                        <a class="dropdown-item" href="#">
+
+                            <i class="fa-solid fa-box text-warning me-2"></i>
+
+                            Product stock is low
+
+                        </a>
+
+                    </li>
+
+                </ul>
+
+            </div>
+
+            <!-- Messages -->
+            <div class="dropdown me-3">
+
+                <button
+                        class="btn nav-icon position-relative"
+                        data-bs-toggle="dropdown">
+
+                    <i class="fa-regular fa-envelope"></i>
+
+                    <span class="badge bg-primary rounded-pill notification-badge">
+                        5
+                    </span>
+
+                </button>
+
+                <ul class="dropdown-menu dropdown-menu-end shadow border-0 rounded-4">
+
+                    <li class="dropdown-header fw-bold">
+                        Messages
+                    </li>
+
+                    <li><hr class="dropdown-divider"></li>
+
+                    <li>
+
+                        <a class="dropdown-item" href="#">
+
+                            John sent you a message
+
+                        </a>
+
+                    </li>
+
+                    <li>
+
+                        <a class="dropdown-item" href="#">
+
+                            New support ticket
+
+                        </a>
+
+                    </li>
+
+                </ul>
+
+            </div>
+
+            <!-- Profile -->
+            <div class="dropdown">
+
+                <a
+                        href="#"
+                        class="d-flex align-items-center text-decoration-none"
+                        data-bs-toggle="dropdown">
+
+                    <img
+                            src="{{ url_for('static', filename='images/photo.jpg') }}"
+                            width="45"
+                            height="45"
+                            class="rounded-circle border border-2 border-primary">
+
+                    <div class="ms-2 d-none d-md-block">
+
+                        <h6 class="mb-0 fw-bold">
+
+                            Admin
+
+                        </h6>
+
+                        <small class="text-muted">
+
+                            Administrator
+
+                        </small>
+
+                    </div>
+
+                    <i class="fa-solid fa-chevron-down ms-2 text-secondary"></i>
+
+                </a>
+
+                <ul class="dropdown-menu dropdown-menu-end shadow border-0 rounded-4">
+
+                    <li>
+
+                        <a class="dropdown-item" href="#">
+
+                            <i class="fa-solid fa-user me-2"></i>
+
+                            My Profile
+
+                        </a>
+
+                    </li>
+
+                    <li>
+
+                        <a class="dropdown-item" href="#">
+
+                            <i class="fa-solid fa-gear me-2"></i>
+
+                            Settings
+
+                        </a>
+
+                    </li>
+
+                    <li><hr class="dropdown-divider"></li>
+
+                    <li>
+
+                        <a class="dropdown-item text-danger" href="#">
+
+                            <i class="fa-solid fa-right-from-bracket me-2"></i>
+
+                            Logout
+
+                        </a>
+
+                    </li>
+
+                </ul>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</nav>

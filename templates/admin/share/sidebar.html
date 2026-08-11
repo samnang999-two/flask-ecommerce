@@ -1,0 +1,96 @@
+<aside class="sidebar">
+
+    <!-- Logo -->
+    <div class="sidebar-header">
+
+        <a href="{{ url_for('admin_dashboard') }}" class="logo">
+
+            <div class="logo-icon">
+
+                <i class="fa-solid fa-store"></i>
+
+            </div>
+
+            <div class="logo-text">
+
+                <h5>E-Store</h5>
+
+                <span>Admin Dashboard</span>
+
+            </div>
+
+        </a>
+
+    </div>
+
+    <!-- Navigation -->
+    <div class="sidebar-body">
+
+        <p class="menu-title">MAIN MENU</p>
+
+        <ul class="sidebar-menu">
+
+            <li>
+
+                <a href="{{ url_for('admin_dashboard') }}"
+                   class="{% if request.endpoint == 'admin_dashboard' %}active{% endif %}">
+
+                    <i class="fa-solid fa-house"></i>
+
+                    <span>Dashboard</span>
+
+                </a>
+
+            </li>
+
+            <li>
+
+                <a href="{{ url_for('admin_users') }}"
+                   class="{% if request.endpoint == 'admin_users' %}active{% endif %}">
+
+                    <i class="fa-solid fa-users"></i>
+
+                    <span>Users</span>
+
+                </a>
+
+            </li>
+
+
+
+        </ul>
+
+        <p class="menu-title mt-4">SYSTEM</p>
+
+        <ul class="sidebar-menu">
+
+            <li>
+
+                <a href="#">
+
+                    <i class="fa-solid fa-gear"></i>
+
+                    <span>Settings</span>
+
+                </a>
+
+            </li>
+
+            <li>
+
+                <a href="#">
+
+                    <i class="fa-solid fa-right-from-bracket"></i>
+
+                    <span>Logout</span>
+
+                </a>
+
+            </li>
+
+        </ul>
+
+    </div>
+
+
+</aside>

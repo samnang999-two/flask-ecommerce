@@ -1,0 +1,113 @@
+{% extends 'admin/master.html' %}
+
+{% block title %}Users{% endblock %}
+
+{% block content %}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+        <h2 class="fw-bold mb-1">User Management</h2>
+        <p class="text-muted mb-0">Manage all users in your system</p>
+    </div>
+
+    <div>
+        <button class="btn btn-outline-secondary me-2">
+            <i class="fa-solid fa-file-export me-2"></i>Export
+        </button>
+
+        <a href="{{ url_for('admin_user_create') }}" class="btn btn-primary">
+            <i class="fa-solid fa-user-plus me-2"></i>Add User
+        </a>
+    </div>
+</div>
+
+<div class="card border-0 shadow-sm">
+    <div class="card-body">
+
+        <div class="table-responsive">
+            <table class="table table-hover align-middle">
+                <thead class="table-light">
+                    <tr>
+                        <th>ID</th>
+                        <th>User</th>
+                        <th>Email</th>
+                        <th>Role</th>
+                        <th class="text-center" width="160">Action</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    {% if users %}
+                        {% for user in users %}
+                        <tr>
+                            <td>#{{ user.id }}</td>
+
+                            <td>
+                                <div class="d-flex align-items-center">
+                                    <img src="{{ url_for('static', filename=user.profile if user.profile else 'images/photo.jpg') }}"
+                                         alt="{{ user.username }}"
+                                         class="rounded-circle"
+                                         width="45"
+                                         height="45"
+                                         style="object-fit: cover;">
+
+                                    <div class="ms-3">
+                                        <div class="fw-bold">{{ user.username }}</div>
+                                        <small class="text-muted">{{ user.role }}</small>
+                                    </div>
+                                </div>
+                            </td>
+
+                            <td>{{ user.email }}</td>
+
+
+                            <td>
+                                {% if user.role.lower() == 'admin' %}
+                                    <span class="badge bg-primary">Admin</span>
+                                {% elif user.role.lower() == 'vendor' %}
+                                    <span class="badge bg-warning text-dark">Vendor</span>
+                                {% else %}
+                                    <span class="badge bg-secondary">User</span>
+                                {% endif %}
+                            </td>
+
+
+                            <td class="text-center">
+                                <!-- Edit Link -->
+                                <a href="{{ url_for('admin_user_edit', id=user.id) }}" class="btn btn-sm btn-warning me-1">
+                                    <i class="fa-solid fa-pen"></i>
+                                </a>
+
+                                <!-- Delete Link -->
+                                <a href="{{ url_for('user_delete', id=user.id) }}" class="btn btn-sm btn-danger">
+                                    <i class="fa-solid fa-trash"></i>
+                                </a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    {% else %}
+                        <tr>
+                            <td colspan="7" class="text-center py-4 text-muted">
+                                <i class="fa-solid fa-users fa-2x mb-2"></i><br>
+                                No users found.
+                            </td>
+                        </tr>
+                    {% endif %}
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Pagination -->
+        <nav class="mt-4">
+            <ul class="pagination justify-content-end mb-0">
+                <li class="page-item disabled"><a class="page-link">Previous</a></li>
+                <li class="page-item active"><a class="page-link">1</a></li>
+                <li class="page-item"><a class="page-link">2</a></li>
+                <li class="page-item"><a class="page-link">Next</a></li>
+            </ul>
+        </nav>
+
+    </div>
+</div>
+
+{% endblock %}
