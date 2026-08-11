@@ -1,0 +1,10 @@
+[
+    {
+        "id": "dd80512f2af6769b",
+        "username": "sam",
+        "email": "samnangm535@gmail.com",
+        "password_hash": "scrypt:32768:8:1$wjcr7uNofAGZoiAV$e1efad0eea73dcbea1ec771d3198aa6dbece48e6bd1a27eea0bdcd9a8960a3877b1119a75dcec754ef91f8591d63c97982e9fd33e53c2a2724d70241cdfa63c0",
+        "reset_token": null,
+        "reset_token_expiry": null
+    }
+]
