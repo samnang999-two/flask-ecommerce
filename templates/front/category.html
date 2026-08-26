@@ -9,6 +9,8 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <!-- SweetAlert2 CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
     <link rel="stylesheet" href="{{ url_for('static', filename='front/style.front') }}">
     <style>
         .hover-animate:hover {
@@ -64,7 +66,7 @@
             <h1 class="display-4 fw-bold text-capitalize">{{ selected_category if selected_category else 'Shop by Category' }}</h1>
             <nav aria-label="breadcrumb">
                 <ol class="breadcrumb justify-content-center mb-0">
-                    <li class="breadcrumb-item"><a href="{{ url_for('home') }}" class="text-dark">Home</a></li>
+                    <li class="breadcrumb-item"><a href="{{ url_for('front.front_store.home') }}" class="text-dark">Home</a></li>
                     <li class="breadcrumb-item active" aria-current="page">Categories</li>
                 </ol>
             </nav>
@@ -78,13 +80,13 @@
                     <h5 class="fw-bold mb-4">Categories</h5>
                     <ul class="list-unstyled mb-0">
                         <li class="mb-3">
-                            <a href="{{ url_for('categories') }}" class="text-decoration-none text-dark d-flex justify-content-between align-items-center category-link {% if not selected_category %}fw-bold text-primary{% endif %}">
+                            <a href="{{ url_for('front.front_store.categories') }}" class="text-decoration-none text-dark d-flex justify-content-between align-items-center category-link {% if not selected_category %}fw-bold text-primary{% endif %}">
                                 <span>All Categories</span>
                             </a>
                         </li>
                         {% for category in categories %}
                         <li class="mb-3">
-                            <a href="{{ url_for('categories', cat=category.name) }}" class="text-decoration-none text-dark d-flex justify-content-between align-items-center category-link {% if selected_category == category.name %}fw-bold text-primary{% endif %}">
+                            <a href="{{ url_for('front.front_store.categories', cat=category.name) }}" class="text-decoration-none text-dark d-flex justify-content-between align-items-center category-link {% if selected_category == category.name %}fw-bold text-primary{% endif %}">
                                 <span class="text-capitalize">{{ category.name }}</span>
                                 <span class="badge bg-light text-dark rounded-pill">{{ category.count }}</span>
                             </a>
@@ -120,10 +122,13 @@
                                 <span class="product-price fs-5 fw-bold text-dark mb-4 d-block">${{ "%.2f"|format(product.price) }}</span>
 
                                 <div class="d-flex gap-2 mt-auto align-items-center">
-                                    <a href="{{ url_for('product', id=product.id) }}" class="btn btn-outline-dark rounded-pill py-2 px-3 flex-grow-1 fw-semibold small d-flex align-items-center justify-content-center gap-1">
+                                    <a href="{{ url_for('front.front_store.product', id=product.id) }}" class="btn btn-outline-dark rounded-pill py-2 px-3 flex-grow-1 fw-semibold small d-flex align-items-center justify-content-center gap-1">
                                         <i class="bi bi-eye"></i> View Details
                                     </a>
-                                    <form action="{{ url_for('add_to_cart', id=product.id) }}" method="POST" class="m-0 p-0">
+                                    <form action="{{ url_for('front.front_store.add_to_cart', id=product.id) }}" method="POST" class="m-0 p-0">
+                                        {% if csrf_token %}
+                                            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                                        {% endif %}
                                         <button type="submit" class="btn btn-dark rounded-circle d-flex align-items-center justify-content-center shadow-sm" style="width: 42px; height: 42px;" aria-label="Add to cart">
                                             <i class="bi bi-cart-plus fs-5"></i>
                                         </button>
@@ -139,21 +144,21 @@
                 <nav aria-label="Page navigation" class="mt-5 pt-3 border-top">
                     <ul class="pagination justify-content-center gap-2">
                         <li class="page-item {% if current_page == 1 %}disabled{% endif %}">
-                            <a class="page-link border-0 shadow-sm rounded-circle text-dark" href="{{ url_for('categories', page=current_page - 1, cat=selected_category) if selected_category else url_for('categories', page=current_page - 1) }}" tabindex="-1" aria-disabled="true">
+                            <a class="page-link border-0 shadow-sm rounded-circle text-dark" href="{{ url_for('front.front_store.categories', page=current_page - 1, cat=selected_category) if selected_category else url_for('front.front_store.categories', page=current_page - 1) }}" tabindex="-1" aria-disabled="true">
                                 <i class="bi bi-chevron-left"></i>
                             </a>
                         </li>
 
                         {% for p in range(1, total_pages + 1) %}
                         <li class="page-item {% if current_page == p %}active{% endif %}">
-                            <a class="page-link border-0 shadow-sm rounded-circle {% if current_page == p %}bg-dark text-white fw-semibold{% else %}text-dark fw-semibold{% endif %}" href="{{ url_for('categories', page=p, cat=selected_category) if selected_category else url_for('categories', page=p) }}">
+                            <a class="page-link border-0 shadow-sm rounded-circle {% if current_page == p %}bg-dark text-white fw-semibold{% else %}text-dark fw-semibold{% endif %}" href="{{ url_for('front.front_store.categories', page=p, cat=selected_category) if selected_category else url_for('front.front_store.categories', page=p) }}">
                                 {{ p }}
                             </a>
                         </li>
                         {% endfor %}
 
                         <li class="page-item {% if current_page == total_pages %}disabled{% endif %}">
-                            <a class="page-link border-0 shadow-sm rounded-circle text-dark" href="{{ url_for('categories', page=current_page + 1, cat=selected_category) if selected_category else url_for('categories', page=current_page + 1) }}">
+                            <a class="page-link border-0 shadow-sm rounded-circle text-dark" href="{{ url_for('front.front_store.categories', page=current_page + 1, cat=selected_category) if selected_category else url_for('front.front_store.categories', page=current_page + 1) }}">
                                 <i class="bi bi-chevron-right"></i>
                             </a>
                         </li>
@@ -166,6 +171,8 @@
 
     {% include 'front/share/footer.html' %}
 
+    <!-- JS CDN Scripts -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </body>
 </html>

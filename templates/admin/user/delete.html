@@ -1,17 +1,16 @@
 {% extends 'admin/master.html' %}
 
-{% block title %}Delete User{% endblock %}
+{% block title %}
+Delete User
+{% endblock %}
 
 {% block content %}
-
 <div class="row justify-content-center pt-4">
     <div class="col-md-6 col-lg-5">
         <div class="card shadow-lg border-0 border-top border-danger border-4 rounded-4">
             <div class="card-body p-4 text-center">
 
-                <!-- Warning Icon -->
-                <div class="rounded-circle bg-danger-subtle text-danger d-inline-flex align-items-center justify-content-center mb-3"
-                     style="width: 80px; height: 80px;">
+                <div class="rounded-circle bg-danger-subtle text-danger d-inline-flex align-items-center justify-content-center mb-3" style="width:80px;height:80px;">
                     <i class="fa-solid fa-triangle-exclamation fa-3x"></i>
                 </div>
 
@@ -20,34 +19,36 @@
                     This action <strong class="text-danger">cannot be undone</strong>. All associated data will be permanently removed.
                 </p>
 
-                <!-- Dynamic User Info Box -->
                 <div class="bg-light p-3 rounded-3 text-start mb-4 border d-flex align-items-center">
-                    <img src="{% if user.profile %}{{ url_for('static', filename=user.profile) }}{% else %}{{ url_for('static', filename='images/photo.jpg') }}{% endif %}"
-                         alt="User Avatar"
-                         class="rounded-circle me-3 border"
-                         width="55"
-                         height="55"
-                         style="object-fit: cover;">
+                    {% if user.profile %}
+                        <img src="{{ url_for('static', filename=user.profile) }}" alt="{{ user.username }}" class="rounded-circle me-3 border" width="55" height="55" style="object-fit:cover;">
+                    {% else %}
+                        <img src="{{ url_for('static', filename='images/photo.jpg') }}" alt="{{ user.username }}" class="rounded-circle me-3 border" width="55" height="55" style="object-fit:cover;">
+                    {% endif %}
 
                     <div class="overflow-hidden">
                         <h6 class="fw-bold text-dark mb-0 text-truncate">{{ user.username }}</h6>
                         <small class="text-muted d-block text-truncate">{{ user.email }}</small>
                         <div class="mt-1">
                             <span class="badge bg-secondary">ID: #{{ user.id }}</span>
-                            <span class="badge bg-primary ms-1">{{ user.role }}</span>
+                            {% if user.role and user.role.lower() in ['admin', 'administrator'] %}
+                                <span class="badge bg-primary ms-1">Admin</span>
+                            {% elif user.role and user.role.lower() == 'vendor' %}
+                                <span class="badge bg-warning text-dark ms-1">Vendor</span>
+                            {% else %}
+                                <span class="badge bg-secondary ms-1">{{ user.role or 'User' }}</span>
+                            {% endif %}
                         </div>
                     </div>
                 </div>
 
-                <!-- Form Buttons -->
-                <form method="POST">
+                <form method="POST" action="{{ url_for('admin.admin_user.delete', id=user.id) }}">
                     <div class="d-flex justify-content-center gap-2">
-                        <a href="{{ url_for('admin_users') }}" class="btn btn-light border px-4 rounded-3 fw-semibold">
-                            <i class="fa-solid fa-xmark me-1"></i> Cancel
+                        <a href="{{ url_for('admin.admin_user.index') }}" class="btn btn-light border px-4 rounded-3 fw-semibold">
+                            <i class="fa-solid fa-xmark me-1"></i>Cancel
                         </a>
-
                         <button type="submit" class="btn btn-danger px-4 rounded-3 fw-semibold shadow-sm">
-                            <i class="fa-solid fa-trash me-1"></i> Yes, Delete
+                            <i class="fa-solid fa-trash me-1"></i>Yes, Delete
                         </button>
                     </div>
                 </form>
@@ -56,5 +57,4 @@
         </div>
     </div>
 </div>
-
 {% endblock %}

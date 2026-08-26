@@ -93,8 +93,8 @@
             {% if product %}
             <nav aria-label="breadcrumb" class="mb-4">
                 <ol class="breadcrumb">
-                    <li class="breadcrumb-item"><a href="{{ url_for('home') }}" class="text-decoration-none text-muted">Home</a></li>
-                    <li class="breadcrumb-item"><a href="{{ url_for('products_route') }}" class="text-decoration-none text-muted">Shop</a></li>
+                    <li class="breadcrumb-item"><a href="{{ url_for('front.front_store.home') }}" class="text-decoration-none text-muted">Home</a></li>
+                    <li class="breadcrumb-item"><a href="{{ url_for('front.front_store.products_route') }}" class="text-decoration-none text-muted">Shop</a></li>
                     <li class="breadcrumb-item active fw-medium text-dark" aria-current="page">{{ product.title }}</li>
                 </ol>
             </nav>
@@ -123,7 +123,6 @@
                         <p class="display-6 fw-semibold text-dark mb-4">${{ "%.2f"|format(product.price) }}</p>
                         <p class="lead text-muted mb-4 lh-base">{{ product.description }}</p>
 
-                        <!-- Current cart quantity badge -->
                         {% if current_qty > 0 %}
                         <div class="mb-3" id="in-cart-info">
                             <span class="in-cart-badge">
@@ -137,8 +136,7 @@
 
                         <hr class="my-4">
 
-                        <!-- Add to cart form (AJAX) -->
-                        <form id="add-to-cart-form" action="{{ url_for('add_to_cart', id=product.id) }}" method="POST">
+                        <form id="add-to-cart-form" action="{{ url_for('front.front_store.add_to_cart', id=product.id) }}" method="POST">
                             <div class="row g-3 align-items-end mb-4">
                                 <div class="col-auto">
                                     <label for="quantity" class="form-label fw-semibold text-dark-gray">Quantity</label>
@@ -158,9 +156,9 @@
                                 <button type="submit" id="add-to-cart-btn" class="btn btn-primary btn-lg flex-grow-1 py-3 rounded-pill shadow-sm">
                                     <i class="bi bi-cart-plus me-2"></i> Add to Cart
                                 </button>
-                                <button type="button" class="btn btn-outline-dark btn-lg rounded-circle px-0" style="width: 58px;" aria-label="Add to wishlist">
+                                <a href="{{ url_for('front.front_store.add_to_wishlist', id=product.id) }}" class="btn btn-outline-dark btn-lg rounded-circle px-0 d-flex align-items-center justify-content-center" style="width: 58px; height: 58px;" aria-label="Add to wishlist">
                                     <i class="bi bi-heart"></i>
-                                </button>
+                                </a>
                             </div>
                         </form>
 
@@ -188,7 +186,7 @@
             <section class="mt-5 pt-5 border-top">
                 <div class="d-flex justify-content-between align-items-center mb-4">
                     <h3 class="fw-bold mb-0">Similar Category</h3>
-                    <a href="{{ url_for('categories', cat=product.category) }}" class="text-dark fw-semibold text-decoration-none border-bottom border-dark pb-1">View All</a>
+                    <a href="{{ url_for('front.front_store.categories', cat=product.category) }}" class="text-dark fw-semibold text-decoration-none border-bottom border-dark pb-1">View All</a>
                 </div>
 
                 <div class="row g-4">
@@ -203,10 +201,10 @@
                                 <span class="product-price fs-6 fw-bold text-dark mb-3 d-block">${{ "%.2f"|format(p.price) }}</span>
 
                                 <div class="d-flex gap-2 mt-auto align-items-center">
-                                    <a href="{{ url_for('product', id=p.id) }}" class="btn btn-outline-dark rounded-pill py-2 px-3 flex-grow-1 fw-semibold small d-flex align-items-center justify-content-center gap-1">
+                                    <a href="{{ url_for('front.front_store.product', id=p.id) }}" class="btn btn-outline-dark rounded-pill py-2 px-3 flex-grow-1 fw-semibold small d-flex align-items-center justify-content-center gap-1">
                                         <i class="bi bi-eye"></i> Details
                                     </a>
-                                    <form action="{{ url_for('add_to_cart', id=p.id) }}" method="POST" class="m-0 p-0">
+                                    <form action="{{ url_for('front.front_store.add_to_cart', id=p.id) }}" method="POST" class="m-0 p-0">
                                         <button type="submit" class="btn btn-dark rounded-circle d-flex align-items-center justify-content-center shadow-sm" style="width: 38px; height: 38px;" aria-label="Add to cart">
                                             <i class="bi bi-cart-plus"></i>
                                         </button>
@@ -225,7 +223,7 @@
                 <i class="bi bi-exclamation-circle text-muted display-1 mb-4 d-block"></i>
                 <h2 class="fw-bold">Product Not Found</h2>
                 <p class="text-muted mb-4">The product you are looking for does not exist or has been removed.</p>
-                <a href="{{ url_for('products_route') }}" class="btn btn-dark rounded-pill px-4">Continue Shopping</a>
+                <a href="{{ url_for('front.front_store.products_route') }}" class="btn btn-dark rounded-pill px-4">Continue Shopping</a>
             </div>
             {% endif %}
         </div>
@@ -236,7 +234,6 @@
 
     {% if product %}
     <script>
-        // ── Quantity Selector ────────────────────────────────────────────────
         const qtyInput  = document.getElementById('quantity');
         const qtyMinus  = document.getElementById('qty-minus');
         const qtyPlus   = document.getElementById('qty-plus');
@@ -251,18 +248,15 @@
             qtyInput.value = val + 1;
         });
 
-        // Prevent typing values < 1
         qtyInput.addEventListener('change', () => {
             let val = parseInt(qtyInput.value);
             if (isNaN(val) || val < 1) qtyInput.value = 1;
         });
 
-        // ── AJAX Add-to-Cart ─────────────────────────────────────────────────
         const productTitle = {{ product.title | tojson }};
         const productPrice = '${{ "%.2f"|format(product.price) }}';
         const productImage = {{ product.image | tojson }};
 
-        // Track in-cart qty (initialised from server)
         let inCartQty = {{ current_qty | int }};
 
         document.getElementById('add-to-cart-form').addEventListener('submit', function(e) {
@@ -307,11 +301,13 @@
                         timerProgressBar: true
                     }).then(result => {
                         if (result.isConfirmed) {
-                            window.location.href = '{{ url_for("cart") }}';
+                            window.location.href = '{{ url_for("front.front_store.cart") }}';
                         }
                     });
 
                     qtyInput.value = 1;
+                } else if (data.redirect) {
+                    window.location.href = data.redirect;
                 } else {
                     Swal.fire({ icon: 'error', title: 'Error', text: data.message || 'Could not add item to cart.', confirmButtonColor: '#111111' });
                 }
@@ -325,7 +321,6 @@
             });
         });
 
-        // Update "X already in your cart" badge
         function updateInCartBadge(qty) {
             const info = document.getElementById('in-cart-info');
             if (qty > 0) {
@@ -337,7 +332,6 @@
             }
         }
 
-        // Set navbar cart badge to exact server-confirmed count
         function setNavCartBadge(count) {
             const badge = document.querySelector('.navbar .badge');
             if (badge) badge.textContent = count;

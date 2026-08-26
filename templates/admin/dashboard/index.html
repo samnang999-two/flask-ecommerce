@@ -1,7 +1,7 @@
 {% extends "admin/master.html" %}
 
 {% block title %}
-Dashboard
+    Dashboard
 {% endblock %}
 
 {% block content %}
@@ -9,32 +9,48 @@ Dashboard
 <!-- Page Header -->
 <div class="d-flex justify-content-between align-items-center mb-4">
     <div>
-        <h2 class="fw-bold mb-1">Dashboard</h2>
-        <p class="text-muted mb-0">Welcome back 👋 Here's what's happening today.</p>
+        <h2 class="fw-bold mb-1">
+            Dashboard
+        </h2>
+        <p class="text-muted mb-0">
+            Welcome back 👋 Here's what's happening today.
+        </p>
     </div>
+
     <div>
         <button class="btn btn-light shadow-sm me-2">
-            <i class="fa-solid fa-download me-2"></i>Export
+            <i class="fa-solid fa-download me-2"></i>
+            Export
         </button>
+
         <button class="btn btn-primary shadow">
-            <i class="fa-solid fa-plus me-2"></i>New Order
+            <i class="fa-solid fa-plus me-2"></i>
+            New Order
         </button>
     </div>
 </div>
 
 <!-- Statistic Cards -->
 <div class="row g-4">
+
+    <!-- Revenue -->
     <div class="col-xl-3 col-md-6">
         <div class="card border-0 shadow dashboard-card">
             <div class="card-body">
                 <div class="d-flex justify-content-between">
                     <div>
-                        <small class="text-muted">Total Revenue</small>
-                        <h3 class="fw-bold mt-2">$124,580</h3>
+                        <small class="text-muted">
+                            Total Revenue
+                        </small>
+                        <h3 class="fw-bold mt-2">
+                            $124,580
+                        </h3>
                         <span class="text-success">
-                            <i class="fa-solid fa-arrow-trend-up"></i> +18.2%
+                            <i class="fa-solid fa-arrow-trend-up"></i>
+                            +18.2%
                         </span>
                     </div>
+
                     <div class="icon-box bg-primary">
                         <i class="fa-solid fa-dollar-sign"></i>
                     </div>
@@ -43,17 +59,24 @@ Dashboard
         </div>
     </div>
 
+    <!-- Orders -->
     <div class="col-xl-3 col-md-6">
         <div class="card border-0 shadow dashboard-card">
             <div class="card-body">
                 <div class="d-flex justify-content-between">
                     <div>
-                        <small class="text-muted">Total Orders</small>
-                        <h3 class="fw-bold mt-2">2,458</h3>
+                        <small class="text-muted">
+                            Total Orders
+                        </small>
+                        <h3 class="fw-bold mt-2">
+                            2,458
+                        </h3>
                         <span class="text-success">
-                            <i class="fa-solid fa-arrow-trend-up"></i> +12%
+                            <i class="fa-solid fa-arrow-trend-up"></i>
+                            +12%
                         </span>
                     </div>
+
                     <div class="icon-box bg-success">
                         <i class="fa-solid fa-cart-shopping"></i>
                     </div>
@@ -62,17 +85,24 @@ Dashboard
         </div>
     </div>
 
+    <!-- Customers -->
     <div class="col-xl-3 col-md-6">
         <div class="card border-0 shadow dashboard-card">
             <div class="card-body">
                 <div class="d-flex justify-content-between">
                     <div>
-                        <small class="text-muted">Customers</small>
-                        <h3 class="fw-bold mt-2">1,286</h3>
+                        <small class="text-muted">
+                            Customers
+                        </small>
+                        <h3 class="fw-bold mt-2">
+                            1,286
+                        </h3>
                         <span class="text-success">
-                            <i class="fa-solid fa-arrow-trend-up"></i> +8%
+                            <i class="fa-solid fa-arrow-trend-up"></i>
+                            +8%
                         </span>
                     </div>
+
                     <div class="icon-box bg-warning">
                         <i class="fa-solid fa-users"></i>
                     </div>
@@ -81,17 +111,24 @@ Dashboard
         </div>
     </div>
 
+    <!-- Products -->
     <div class="col-xl-3 col-md-6">
         <div class="card border-0 shadow dashboard-card">
             <div class="card-body">
                 <div class="d-flex justify-content-between">
                     <div>
-                        <small class="text-muted">Products</small>
-                        <h3 class="fw-bold mt-2">568</h3>
+                        <small class="text-muted">
+                            Products
+                        </small>
+                        <h3 class="fw-bold mt-2">
+                            568
+                        </h3>
                         <span class="text-danger">
-                            <i class="fa-solid fa-arrow-trend-down"></i> -2%
+                            <i class="fa-solid fa-arrow-trend-down"></i>
+                            -2%
                         </span>
                     </div>
+
                     <div class="icon-box bg-danger">
                         <i class="fa-solid fa-box-open"></i>
                     </div>
@@ -99,7 +136,7 @@ Dashboard
             </div>
         </div>
     </div>
-</div>
 
+</div>
 
 {% endblock %}

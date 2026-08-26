@@ -1,0 +1,15 @@
+[33m137fc31[m index on main: c80121a Add requirements file for production deployment
+ static/admin/admin.css               |   0
+ static/admin/admin.js                |   0
+ static/{css => front}/style.css      |   0
+ static/images/photo.jpg              | Bin [31m0[m -> [32m35771[m bytes
+ templates/admin/dashboard/index.html |  10 [32m++++++++++[m
+ templates/admin/master.html          |  10 [32m++++++++++[m
+ templates/admin/share/navbar.html    |  10 [32m++++++++++[m
+ templates/admin/share/scripts.html   |  10 [32m++++++++++[m
+ templates/admin/share/sidebar.html   |  10 [32m++++++++++[m
+ templates/admin/user/create.html     |  10 [32m++++++++++[m
+ templates/admin/user/delete.html     |   0
+ templates/admin/user/edit.html       |  10 [32m++++++++++[m
+ templates/admin/user/index.html      |  10 [32m++++++++++[m
+ 13 files changed, 80 insertions(+)

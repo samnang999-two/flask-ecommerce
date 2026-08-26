@@ -1,68 +1,87 @@
 {% extends 'admin/master.html' %}
 
-{% block title %}Edit User{% endblock %}
+{% block title %}
+Edit User
+{% endblock %}
 
 {% block content %}
-
 <div class="d-flex justify-content-between align-items-center mb-4">
     <div>
         <h2 class="fw-bold mb-1">Edit User</h2>
         <p class="text-muted mb-0">Update user information.</p>
     </div>
-
-    <a href="{{ url_for('admin_users') }}" class="btn btn-outline-secondary">
+    <a href="{{ url_for('admin.admin_user.index') }}" class="btn btn-outline-secondary">
         <i class="fa-solid fa-arrow-left me-2"></i>Back
     </a>
 </div>
 
+{% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+        {% for category, message in messages %}
+            <div class="alert
+                {% if category == 'success' %} alert-success
+                {% elif category == 'warning' %} alert-warning
+                {% elif category == 'danger' or category == 'error' %} alert-danger
+                {% else %} alert-info
+                {% endif %}
+                alert-dismissible fade show shadow-sm" role="alert">
+                {{ message }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        {% endfor %}
+    {% endif %}
+{% endwith %}
+
 <div class="card shadow-sm border-0 rounded-4">
     <div class="card-body p-4">
-        <form method="POST" enctype="multipart/form-data">
+        <form method="POST" action="{{ url_for('admin.admin_user.edit', id=user.id) }}" enctype="multipart/form-data" id="editUserForm">
 
-            <!-- Avatar Preview Zone -->
             <div class="text-center mb-4">
-                <img id="avatarPreview"
-                     src="{% if user.profile %}{{ url_for('static', filename=user.profile) }}{% else %}{{ url_for('static', filename='images/photo.jpg') }}{% endif %}"
-                     class="rounded-circle border shadow"
-                     width="120"
-                     height="120"
-                     style="object-fit: cover;">
+                {% if user.profile %}
+                    <img id="avatarPreview" src="{{ url_for('static', filename=user.profile) }}" class="rounded-circle border shadow" width="120" height="120" style="object-fit: cover;">
+                {% else %}
+                    <img id="avatarPreview" src="{{ url_for('static', filename='images/photo.jpg') }}" class="rounded-circle border shadow" width="120" height="120" style="object-fit: cover;">
+                {% endif %}
 
                 <div class="mt-3 col-md-4 mx-auto">
-                    <input type="file"
-                           class="form-control"
-                           name="avatar"
-                           id="avatarInput"
-                           accept="image/*"
-                           onchange="previewImage(event)">
+                    <input type="file" class="form-control" name="avatar" id="avatarInput" accept=".jpg,.jpeg,.png,.gif,image/jpeg,image/png,image/gif">
+                    <small class="text-muted d-block mt-2">Maximum 2MB. JPG, JPEG, PNG or GIF.</small>
                 </div>
             </div>
 
             <div class="row">
                 <div class="col-md-6 mb-3">
                     <label class="form-label fw-semibold">Username</label>
-                    <input type="text" name="username" class="form-control" value="{{ user.username }}" required>
+                    <input type="text" name="username" id="username" class="form-control" value="{{ user.username }}" required>
                 </div>
 
                 <div class="col-md-6 mb-3">
                     <label class="form-label fw-semibold">Email</label>
-                    <input type="email" name="email" class="form-control" value="{{ user.email }}" required>
+                    <input type="email" name="email" id="email" class="form-control" value="{{ user.email }}" required>
                 </div>
 
                 <div class="col-md-6 mb-3">
                     <label class="form-label fw-semibold">Role</label>
-                    <select name="role" class="form-select">
-                        <option value="Administrator" {% if user.role == 'Administrator' %}selected{% endif %}>Administrator</option>
-                        <option value="Vendor" {% if user.role == 'Vendor' %}selected{% endif %}>Vendor</option>
-                        <option value="Customer" {% if user.role == 'Customer' %}selected{% endif %}>Customer</option>
+                    <select name="role" id="role" class="form-select">
+                        <option value="Admin" {% if user.role and user.role.lower() in ['admin', 'administrator'] %}selected{% endif %}>
+                            Administrator
+                        </option>
+                        <option value="Vendor" {% if user.role and user.role.lower() == 'vendor' %}selected{% endif %}>
+                            Vendor
+                        </option>
+                        <option value="Customer" {% if user.role and user.role.lower() == 'customer' %}selected{% endif %}>
+                            Customer
+                        </option>
                     </select>
                 </div>
             </div>
 
-            <hr>
+            <hr class="my-4">
 
-            <div class="text-end">
-                <a href="{{ url_for('admin_users') }}" class="btn btn-light me-2">Cancel</a>
+            <div class="d-flex justify-content-end">
+                <a href="{{ url_for('admin.admin_user.index') }}" class="btn btn-light me-2">
+                    <i class="fa-solid fa-xmark me-2"></i>Cancel
+                </a>
                 <button type="submit" class="btn btn-warning px-4 text-white">
                     <i class="fa-solid fa-pen-to-square me-2"></i>Update User
                 </button>
@@ -72,16 +91,31 @@
 </div>
 
 <script>
-function previewImage(event) {
-    const file = event.target.files[0];
-    if (file) {
-        const reader = new FileReader();
-        reader.onload = function(e) {
-            document.getElementById('avatarPreview').src = e.target.result;
-        }
-        reader.readAsDataURL(file);
-    }
-}
-</script>
+const avatarInput = document.getElementById('avatarInput');
+const avatarPreview = document.getElementById('avatarPreview');
 
+avatarInput.addEventListener('change', function () {
+    const file = this.files[0];
+    if (!file) return;
+
+    const allowedTypes = ['image/jpeg', 'image/png', 'image/gif'];
+    if (!allowedTypes.includes(file.type)) {
+        alert('Please select JPG, JPEG, PNG or GIF image.');
+        this.value = '';
+        return;
+    }
+
+    if (file.size > 2 * 1024 * 1024) {
+        alert('Image size must not exceed 2MB.');
+        this.value = '';
+        return;
+    }
+
+    const reader = new FileReader();
+    reader.onload = function (event) {
+        avatarPreview.src = event.target.result;
+    };
+    reader.readAsDataURL(file);
+});
+</script>
 {% endblock %}

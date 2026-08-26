@@ -60,7 +60,7 @@
                 <div class="col-md-6">
                     <nav aria-label="breadcrumb">
                         <ol class="breadcrumb mb-2">
-                            <li class="breadcrumb-item"><a href="{{ url_for('home') }}" class="text-decoration-none text-muted">Home</a></li>
+                            <li class="breadcrumb-item"><a href="{{ url_for('front.front_store.home') }}" class="text-decoration-none text-muted">Home</a></li>
                             <li class="breadcrumb-item active fw-medium text-dark" aria-current="page">Shop</li>
                         </ol>
                     </nav>
@@ -91,10 +91,10 @@
                             <span class="product-price fs-5 fw-bold text-dark mb-4 d-block">${{ "%.2f"|format(product.price) }}</span>
 
                             <div class="d-flex gap-2 mt-auto align-items-center">
-                                <a href="{{ url_for('product', id=product.id) }}" class="btn btn-outline-dark rounded-pill py-2 px-3 flex-grow-1 fw-semibold small d-flex align-items-center justify-content-center gap-1">
+                                <a href="{{ url_for('front.front_store.product', id=product.id) }}" class="btn btn-outline-dark rounded-pill py-2 px-3 flex-grow-1 fw-semibold small d-flex align-items-center justify-content-center gap-1">
                                     <i class="bi bi-eye"></i> View Details
                                 </a>
-                                <form action="{{ url_for('add_to_cart', id=product.id) }}" method="POST" class="m-0 p-0">
+                                <form action="{{ url_for('front.front_store.add_to_cart', id=product.id) }}" method="POST" class="m-0 p-0">
                                     <button type="submit" class="btn btn-dark rounded-circle d-flex align-items-center justify-content-center shadow-sm" style="width: 42px; height: 42px;" aria-label="Add to cart">
                                         <i class="bi bi-cart-plus fs-5"></i>
                                     </button>
@@ -110,21 +110,21 @@
             <nav class="mt-5" aria-label="Page navigation">
                 <ul class="pagination justify-content-center gap-2">
                     <li class="page-item {% if current_page == 1 %}disabled{% endif %}">
-                        <a class="page-link border-0 shadow-sm rounded-circle text-dark" href="{{ url_for('products_route', page=current_page - 1) }}" tabindex="-1" aria-disabled="true">
+                        <a class="page-link border-0 shadow-sm rounded-circle text-dark" href="{{ url_for('front.front_store.products_route', page=current_page - 1) }}" tabindex="-1" aria-disabled="true">
                             <i class="bi bi-chevron-left"></i>
                         </a>
                     </li>
 
                     {% for p in range(1, total_pages + 1) %}
                     <li class="page-item {% if current_page == p %}active{% endif %}">
-                        <a class="page-link border-0 shadow-sm rounded-circle {% if current_page == p %}bg-dark border-dark text-white{% else %}text-dark{% endif %}" href="{{ url_for('products_route', page=p) }}">
+                        <a class="page-link border-0 shadow-sm rounded-circle {% if current_page == p %}bg-dark border-dark text-white{% else %}text-dark{% endif %}" href="{{ url_for('front.front_store.products_route', page=p) }}">
                             {{ p }}
                         </a>
                     </li>
                     {% endfor %}
 
                     <li class="page-item {% if current_page == total_pages %}disabled{% endif %}">
-                        <a class="page-link border-0 shadow-sm rounded-circle text-dark" href="{{ url_for('products_route', page=current_page + 1) }}">
+                        <a class="page-link border-0 shadow-sm rounded-circle text-dark" href="{{ url_for('front.front_store.products_route', page=current_page + 1) }}">
                             <i class="bi bi-chevron-right"></i>
                         </a>
                     </li>

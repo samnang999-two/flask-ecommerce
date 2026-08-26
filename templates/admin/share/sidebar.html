@@ -1,29 +1,20 @@
 <aside class="sidebar">
 
-    <!-- Logo -->
     <div class="sidebar-header">
-
-        <a href="{{ url_for('admin_dashboard') }}" class="logo">
+        <a href="{{ url_for('admin.admin_dashboard.dashboard') }}" class="logo">
 
             <div class="logo-icon">
-
                 <i class="fa-solid fa-store"></i>
-
             </div>
 
             <div class="logo-text">
-
                 <h5>E-Store</h5>
-
-                <span>Admin Dashboard</span>
-
+                <span>Dashboard</span>
             </div>
 
         </a>
-
     </div>
 
-    <!-- Navigation -->
     <div class="sidebar-body">
 
         <p class="menu-title">MAIN MENU</p>
@@ -31,32 +22,26 @@
         <ul class="sidebar-menu">
 
             <li>
-
-                <a href="{{ url_for('admin_dashboard') }}"
-                   class="{% if request.endpoint == 'admin_dashboard' %}active{% endif %}">
+                <a href="{{ url_for('admin.admin_dashboard.dashboard') }}"
+                   class="{% if request.endpoint == 'admin.admin_dashboard.dashboard' %}active{% endif %}">
 
                     <i class="fa-solid fa-house"></i>
-
                     <span>Dashboard</span>
 
                 </a>
-
             </li>
 
+            {% if session.get('role') and session.get('role').lower() in ['admin', 'administrator'] %}
             <li>
-
-                <a href="{{ url_for('admin_users') }}"
-                   class="{% if request.endpoint == 'admin_users' %}active{% endif %}">
+                <a href="{{ url_for('admin.admin_user.index') }}"
+                   class="{% if request.endpoint and request.endpoint.startswith('admin.admin_user.') %}active{% endif %}">
 
                     <i class="fa-solid fa-users"></i>
-
                     <span>Users</span>
 
                 </a>
-
             </li>
-
-
+            {% endif %}
 
         </ul>
 
@@ -65,32 +50,25 @@
         <ul class="sidebar-menu">
 
             <li>
-
                 <a href="#">
 
                     <i class="fa-solid fa-gear"></i>
-
                     <span>Settings</span>
 
                 </a>
-
             </li>
 
             <li>
-
-                <a href="#">
+                <a href="{{ url_for('auth.logout') }}">
 
                     <i class="fa-solid fa-right-from-bracket"></i>
-
                     <span>Logout</span>
 
                 </a>
-
             </li>
 
         </ul>
 
     </div>
-
 
 </aside>

@@ -17,7 +17,6 @@
             color: #111111;
         }
 
-        /* Modern Minimal Hero Section */
         .hero-section {
             background: radial-gradient(circle at 80% 20%, #f3f4f6 0%, #ffffff 100%);
             position: relative;
@@ -33,7 +32,6 @@
             padding: 8px 20px;
         }
 
-        /* Premium Category Grid */
         .category-card-custom {
             height: 220px;
             border-radius: 24px;
@@ -63,7 +61,6 @@
             margin: 0;
         }
 
-        /* Elegant Luxury Product Card */
         .premium-product-card {
             border: none;
             background: #ffffff;
@@ -96,7 +93,6 @@
             transform: scale(1.08);
         }
 
-        /* Glassmorphism Quick Action Buttons */
         .action-blur-btn {
             background: rgba(255, 255, 255, 0.85);
             backdrop-filter: blur(8px);
@@ -112,7 +108,6 @@
             color: #ffffff;
         }
 
-        /* Modernized Minimalist Icon Box */
         .feature-icon-box {
             width: 70px;
             height: 70px;
@@ -144,8 +139,8 @@
                         <h1 class="display-3 fw-extrabold mb-4" style="line-height: 1.15; letter-spacing: -2px;">Redefining Elegance & Innovation.</h1>
                         <p class="text-muted fs-5 mb-5 pe-lg-5">Experience luxury reimagined. Explore an elite collection curated to elevate your everyday lifestyle with timeless design.</p>
                         <div class="d-flex gap-3 justify-content-center justify-content-lg-start">
-                            <a href="{{ url_for('products_route') }}" class="btn btn-dark btn-lg px-5 py-3 rounded-pill fw-bold shadow-sm">Explore Shop</a>
-                            <a href="{{ url_for('categories') }}" class="btn btn-outline-dark btn-lg px-5 py-3 rounded-pill fw-bold">Categories</a>
+                            <a href="{{ url_for('front.front_store.products_route') }}" class="btn btn-dark btn-lg px-5 py-3 rounded-pill fw-bold shadow-sm">Explore Shop</a>
+                            <a href="{{ url_for('front.front_store.categories') }}" class="btn btn-outline-dark btn-lg px-5 py-3 rounded-pill fw-bold">Categories</a>
                         </div>
                     </div>
                     <div class="col-lg-6 d-none d-lg-block">
@@ -181,7 +176,7 @@
                     <span class="text-muted text-uppercase fw-bold tracking-wider small d-block mb-2">Our Highlights</span>
                     <h2 class="fw-bold fs-1 mb-0" style="letter-spacing: -1px;">Featured Masterpieces</h2>
                 </div>
-                <a href="{{ url_for('products_route') }}" class="text-dark fw-bold text-decoration-none border-bottom border-dark pb-1">View All <i class="bi bi-arrow-right ms-1"></i></a>
+                <a href="{{ url_for('front.front_store.products_route') }}" class="text-dark fw-bold text-decoration-none border-bottom border-dark pb-1">View All <i class="bi bi-arrow-right ms-1"></i></a>
             </div>
 
             <div class="row g-4">
@@ -202,10 +197,10 @@
                             <div class="d-flex justify-content-between align-items-center mt-auto pt-3 border-top border-light">
                                 <span class="fs-4 fw-bold text-dark">${{ "%.2f"|format(product.price) }}</span>
                                 <div class="d-flex gap-2 align-items-center">
-                                    <a href="{{ url_for('product', id=product.id) }}" class="text-decoration-none action-blur-btn">
+                                    <a href="{{ url_for('front.front_store.product', id=product.id) }}" class="text-decoration-none action-blur-btn">
                                         Details
                                     </a>
-                                    <form action="{{ url_for('add_to_cart', id=product.id) }}" method="POST" class="m-0 p-0">
+                                    <form action="{{ url_for('front.front_store.add_to_cart', id=product.id) }}" method="POST" class="m-0 p-0">
                                         <button type="submit" class="btn btn-dark rounded-circle d-flex align-items-center justify-content-center shadow-sm" style="width: 44px; height: 44px;" aria-label="Add to cart">
                                             <i class="bi bi-cart-plus fs-5"></i>
                                         </button>

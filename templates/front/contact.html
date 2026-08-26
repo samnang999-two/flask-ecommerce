@@ -5,9 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Contact Us - Premium Store</title>
     <meta name="description" content="Get in touch with Premium Store. Send us a message and we'll get back to you as soon as possible.">
+    <!-- Fonts & CSS -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <!-- SweetAlert2 CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
     <link rel="stylesheet" href="{{ url_for('static', filename='front/style.front') }}">
     <style>
         /* ── Hero ───────────────────────────────────────────────────────── */
@@ -171,9 +174,14 @@
                         <p class="text-muted mb-4 small">All fields are required. We take privacy seriously — your info is never shared.</p>
 
                         <form id="contact-form"
-                              action="{{ url_for('contact') }}"
+                              action="{{ url_for('front.front_store.contact') }}"
                               method="POST"
                               novalidate>
+
+                            <!-- CSRF Token (សម្រាប់ Flask-WTF) -->
+                            {% if csrf_token %}
+                                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                            {% endif %}
 
                             <div class="row g-3">
                                 <!-- Name -->
@@ -266,7 +274,10 @@
     </main>
 
     {% include 'front/share/footer.html' %}
+
+    <!-- JS CDN Scripts -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <script>
         // ── Character counter ────────────────────────────────────────────────
@@ -279,7 +290,7 @@
             charCount.className   = len > 1800 ? 'text-danger ms-auto small' : 'text-muted ms-auto small';
         }
         msgArea.addEventListener('input', updateCharCounter);
-        updateCharCounter();  // init on page load (handles repopulated textarea)
+        updateCharCounter();
 
         // ── Bootstrap + SweetAlert2 validation ──────────────────────────────
         const form    = document.getElementById('contact-form');
@@ -289,7 +300,6 @@
             e.preventDefault();
             e.stopPropagation();
 
-            // Reset previous states
             form.classList.remove('was-validated');
 
             const name    = document.getElementById('contact-name').value.trim();
@@ -334,17 +344,24 @@
             }
 
             // ── Submit via fetch (show loading spinner) ───────────────────
-            sendBtn.disabled     = true;
-            sendBtn.innerHTML    = '<span class="spinner-border spinner-border-sm me-2"></span>Sending…';
+            sendBtn.disabled  = true;
+            sendBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Sending…';
 
             const formData = new FormData(form);
+
+            // ទាញយក CSRF token មកដាក់បន្ថែមក្នុង headers ប្រសិនបើមាន
+            const csrfInput = form.querySelector('input[name="csrf_token"]');
+            const headers = {};
+            if (csrfInput) {
+                headers['X-CSRFToken'] = csrfInput.value;
+            }
+
             fetch(form.action, {
                 method: 'POST',
-                body:   formData
+                body:   formData,
+                headers: headers
             })
             .then(res => {
-                // Flask will redirect to GET /contact on success
-                // We detect success by the final URL or status
                 if (res.ok || res.redirected) {
                     Swal.fire({
                         icon:             'success',
